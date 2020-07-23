@@ -6,6 +6,7 @@ Sliding Puzzle Game (N x N)
 - Play it using keyboard arrow keys or mouse.
 - Dark and Light board themes.
 - Up to 20 x 20 board size.
+- Use (Ctrl + Mouse Wheel Up/Down) for horizontal scroll.
 
 ## Deployment
 * Microsoft Visual Studio Community 2019 for build the project
