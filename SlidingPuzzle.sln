@@ -1,0 +1,91 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sliding Puzzle CSharp", "Sliding Puzzle CSharp", "{AC574537-44D9-4C56-88F4-402550835B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlidingPuzzle (CSharp)", "SlidingPuzzle (CSharp)\SlidingPuzzle (CSharp).csproj", "{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCA7732B-3F32-41B4-8734-9023867D997D} = {FCA7732B-3F32-41B4-8734-9023867D997D}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sliding Puzzle", "Sliding Puzzle", "{62752689-5388-43EA-B6F2-A9BE13F1185C}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sliding Puzzle Library", "Sliding Puzzle Library", "{4D331C4F-2C53-4397-8521-D42E308EC715}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Sliding Puzzle Library", "Sliding Puzzle Library\Sliding Puzzle Library.vbproj", "{FCA7732B-3F32-41B4-8734-9023867D997D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sliding Puzzle VB.Net", "Sliding Puzzle VB.Net", "{B47CABCB-23DB-46DC-BB5F-DEC9F499C5A0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SlidingPuzzle (VB.Net)", "SlidingPuzzle (VB.Net)\SlidingPuzzle (VB.Net).vbproj", "{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCA7732B-3F32-41B4-8734-9023867D997D} = {FCA7732B-3F32-41B4-8734-9023867D997D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|x64.Build.0 = Debug|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|x86.ActiveCfg = Debug|x86
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Debug|x86.Build.0 = Debug|x86
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|x64.ActiveCfg = Release|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|x64.Build.0 = Release|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8}.Release|x86.Build.0 = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|x86.ActiveCfg = Debug|x86
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Debug|x86.Build.0 = Debug|x86
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|x64.Build.0 = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCA7732B-3F32-41B4-8734-9023867D997D}.Release|x86.Build.0 = Release|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|x86.ActiveCfg = Debug|x86
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Debug|x86.Build.0 = Debug|x86
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|x64.Build.0 = Release|Any CPU
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|x86.ActiveCfg = Release|x86
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AC574537-44D9-4C56-88F4-402550835B0B} = {62752689-5388-43EA-B6F2-A9BE13F1185C}
+		{8CA50C53-F7FB-44A9-80AB-22D0CEB24EE8} = {AC574537-44D9-4C56-88F4-402550835B0B}
+		{4D331C4F-2C53-4397-8521-D42E308EC715} = {62752689-5388-43EA-B6F2-A9BE13F1185C}
+		{FCA7732B-3F32-41B4-8734-9023867D997D} = {4D331C4F-2C53-4397-8521-D42E308EC715}
+		{B47CABCB-23DB-46DC-BB5F-DEC9F499C5A0} = {62752689-5388-43EA-B6F2-A9BE13F1185C}
+		{ED35C4B8-E979-4E5C-BF42-D69EDABF8343} = {B47CABCB-23DB-46DC-BB5F-DEC9F499C5A0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C63DD4E0-D3E3-425A-9AFC-DA7E66915B26}
+	EndGlobalSection
+EndGlobal
