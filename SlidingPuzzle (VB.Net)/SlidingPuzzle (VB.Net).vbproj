@@ -106,7 +106,8 @@
     <ApplicationIcon>cube.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Sliding Puzzle Library">
+    <Reference Include="Sliding Puzzle Library, Version=3.5.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Sliding Puzzle Library\bin\x86\Debug\Sliding Puzzle Library.dll</HintPath>
     </Reference>
     <Reference Include="System" />
