@@ -30,8 +30,8 @@ Partial Class FrmWin
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.LblTitle = New System.Windows.Forms.ToolStripLabel()
         Me.MenuClose = New System.Windows.Forms.ToolStripButton()
-        Me.BtnNo = New Sliding_Puzzle_Library.CButton()
-        Me.BtnYes = New Sliding_Puzzle_Library.CButton()
+        Me.BtnNo = New Sliding_Puzzle_Library.PuzzleTile()
+        Me.BtnYes = New Sliding_Puzzle_Library.PuzzleTile()
         Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -75,8 +75,9 @@ Partial Class FrmWin
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LblTitle, Me.MenuClose})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
+        Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(5, 3, 1, 3)
         Me.ToolStrip1.ShowItemToolTips = False
-        Me.ToolStrip1.Size = New System.Drawing.Size(341, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(341, 33)
         Me.ToolStrip1.Stretch = True
         Me.ToolStrip1.TabIndex = 129
         Me.ToolStrip1.Text = "ToolStrip1"
@@ -85,12 +86,12 @@ Partial Class FrmWin
         '
         Me.LblTitle.AutoSize = False
         Me.LblTitle.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblTitle.Image = Global.SlidingPuzzle_VB.Net.My.Resources.Resources.cube1
+        Me.LblTitle.Image = CType(resources.GetObject("LblTitle.Image"), System.Drawing.Image)
         Me.LblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.LblTitle.Margin = New System.Windows.Forms.Padding(7, 1, 0, 2)
+        Me.LblTitle.Margin = New System.Windows.Forms.Padding(5, 1, 0, 2)
         Me.LblTitle.Name = "LblTitle"
-        Me.LblTitle.Size = New System.Drawing.Size(150, 24)
-        Me.LblTitle.Text = " Sliding Puzzle"
+        Me.LblTitle.Size = New System.Drawing.Size(270, 24)
+        Me.LblTitle.Text = "Sliding Puzzle"
         Me.LblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'MenuClose
@@ -123,8 +124,6 @@ Partial Class FrmWin
         Me.BtnNo.Size = New System.Drawing.Size(69, 38)
         Me.BtnNo.TabIndex = 3
         Me.BtnNo.TileNumber = "No"
-        Me.BtnNo.TileNumberAlign = System.Drawing.StringAlignment.Center
-        Me.BtnNo.TileNumberLineAlign = System.Drawing.StringAlignment.Far
         Me.BtnNo.TileSize = 96
         Me.BtnNo.UseVisualStyleBackColor = True
         '
@@ -146,8 +145,6 @@ Partial Class FrmWin
         Me.BtnYes.Size = New System.Drawing.Size(69, 38)
         Me.BtnYes.TabIndex = 2
         Me.BtnYes.TileNumber = "Yes"
-        Me.BtnYes.TileNumberAlign = System.Drawing.StringAlignment.Center
-        Me.BtnYes.TileNumberLineAlign = System.Drawing.StringAlignment.Far
         Me.BtnYes.TileSize = 96
         Me.BtnYes.UseVisualStyleBackColor = True
         '
@@ -165,10 +162,10 @@ Partial Class FrmWin
         Me.Controls.Add(Me.LblMode)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = Global.SlidingPuzzle_VB.Net.My.Resources.Resources.cube
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "FrmWin"
-        Me.Icon = My.Resources.cube
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form2"
         Me.ToolStrip1.ResumeLayout(False)
@@ -183,6 +180,6 @@ Partial Class FrmWin
     Friend WithEvents LblCongrats As Label
     Friend WithEvents LblScore As Label
     Friend WithEvents LblMode As Label
-    Friend WithEvents BtnYes As Sliding_Puzzle_Library.CButton
-    Friend WithEvents BtnNo As Sliding_Puzzle_Library.CButton
+    Friend WithEvents BtnYes As Sliding_Puzzle_Library.PuzzleTile
+    Friend WithEvents BtnNo As Sliding_Puzzle_Library.PuzzleTile
 End Class

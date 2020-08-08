@@ -35,8 +35,8 @@
             this.LblCongrats = new System.Windows.Forms.Label();
             this.LblScore = new System.Windows.Forms.Label();
             this.LblMode = new System.Windows.Forms.Label();
-            this.BtnNo = new Sliding_Puzzle_Library.CButton();
-            this.BtnYes = new Sliding_Puzzle_Library.CButton();
+            this.BtnNo = new Sliding_Puzzle_Library.PuzzleTile();
+            this.BtnYes = new Sliding_Puzzle_Library.PuzzleTile();
             this.ToolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,12 +49,12 @@
             this.MenuClose});
             this.ToolStrip1.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip1.Name = "ToolStrip1";
+            this.ToolStrip1.Padding = new System.Windows.Forms.Padding(5, 3, 1, 3);
             this.ToolStrip1.ShowItemToolTips = false;
-            this.ToolStrip1.Size = new System.Drawing.Size(341, 27);
+            this.ToolStrip1.Size = new System.Drawing.Size(341, 33);
             this.ToolStrip1.Stretch = true;
-            this.ToolStrip1.TabIndex = 133;
+            this.ToolStrip1.TabIndex = 129;
             this.ToolStrip1.Text = "ToolStrip1";
-            this.ToolStrip1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // LblTitle
             // 
@@ -62,12 +62,11 @@
             this.LblTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblTitle.Image = global::SlidingPuzzle_CSharp.Properties.Resources.cube1;
             this.LblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LblTitle.Margin = new System.Windows.Forms.Padding(7, 1, 0, 2);
+            this.LblTitle.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
             this.LblTitle.Name = "LblTitle";
-            this.LblTitle.Size = new System.Drawing.Size(150, 24);
-            this.LblTitle.Text = " Sliding Puzzle";
+            this.LblTitle.Size = new System.Drawing.Size(270, 24);
+            this.LblTitle.Text = "Sliding Puzzle";
             this.LblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.LblTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // MenuClose
             // 
@@ -85,41 +84,39 @@
             // LblCongrats
             // 
             this.LblCongrats.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LblCongrats.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblCongrats.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold);
             this.LblCongrats.Location = new System.Drawing.Point(-1, 47);
             this.LblCongrats.Name = "LblCongrats";
             this.LblCongrats.Size = new System.Drawing.Size(342, 30);
-            this.LblCongrats.TabIndex = 132;
+            this.LblCongrats.TabIndex = 128;
             this.LblCongrats.Text = "Congratulations !!!";
             this.LblCongrats.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.LblCongrats.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // LblScore
             // 
             this.LblScore.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LblScore.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblScore.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold);
             this.LblScore.Location = new System.Drawing.Point(-1, 82);
             this.LblScore.Name = "LblScore";
             this.LblScore.Size = new System.Drawing.Size(342, 30);
-            this.LblScore.TabIndex = 131;
+            this.LblScore.TabIndex = 127;
             this.LblScore.Text = "Your Score: ";
             this.LblScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.LblScore.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // LblMode
             // 
             this.LblMode.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LblMode.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblMode.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Bold);
             this.LblMode.Location = new System.Drawing.Point(-1, 136);
             this.LblMode.Name = "LblMode";
             this.LblMode.Size = new System.Drawing.Size(342, 36);
-            this.LblMode.TabIndex = 130;
+            this.LblMode.TabIndex = 126;
             this.LblMode.Text = "Start New Game?";
             this.LblMode.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.LblMode.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // BtnNo
             // 
+            this.BtnNo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.BtnNo.BackColorDark = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
             this.BtnNo.BackColorLight = System.Drawing.Color.White;
             this.BtnNo.Columns = 1;
@@ -127,23 +124,21 @@
             this.BtnNo.DrawCheckMark = false;
             this.BtnNo.FlatAppearance.BorderSize = 0;
             this.BtnNo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnNo.Font = new System.Drawing.Font("Segoe Script", 14.25F);
+            this.BtnNo.Font = new System.Drawing.Font("Segoe Script", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnNo.IsDarkMode = false;
             this.BtnNo.Location = new System.Drawing.Point(168, 175);
             this.BtnNo.Name = "BtnNo";
             this.BtnNo.Rows = 1;
             this.BtnNo.Size = new System.Drawing.Size(69, 38);
-            this.BtnNo.TabIndex = 135;
+            this.BtnNo.TabIndex = 3;
             this.BtnNo.TileNumber = "No";
-            this.BtnNo.TileNumberAlign = System.Drawing.StringAlignment.Center;
-            this.BtnNo.TileNumberLineAlign = System.Drawing.StringAlignment.Far;
             this.BtnNo.TileSize = 96;
             this.BtnNo.UseVisualStyleBackColor = true;
             this.BtnNo.Click += new System.EventHandler(this.BtnNo_Click);
-            this.BtnNo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // BtnYes
             // 
+            this.BtnYes.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.BtnYes.BackColorDark = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
             this.BtnYes.BackColorLight = System.Drawing.Color.White;
             this.BtnYes.Columns = 1;
@@ -151,20 +146,17 @@
             this.BtnYes.DrawCheckMark = false;
             this.BtnYes.FlatAppearance.BorderSize = 0;
             this.BtnYes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnYes.Font = new System.Drawing.Font("Segoe Script", 14.25F);
+            this.BtnYes.Font = new System.Drawing.Font("Segoe Script", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnYes.IsDarkMode = false;
             this.BtnYes.Location = new System.Drawing.Point(93, 175);
             this.BtnYes.Name = "BtnYes";
             this.BtnYes.Rows = 1;
             this.BtnYes.Size = new System.Drawing.Size(69, 38);
-            this.BtnYes.TabIndex = 134;
+            this.BtnYes.TabIndex = 2;
             this.BtnYes.TileNumber = "Yes";
-            this.BtnYes.TileNumberAlign = System.Drawing.StringAlignment.Center;
-            this.BtnYes.TileNumberLineAlign = System.Drawing.StringAlignment.Far;
             this.BtnYes.TileSize = 96;
             this.BtnYes.UseVisualStyleBackColor = true;
             this.BtnYes.Click += new System.EventHandler(this.BtnYes_Click);
-            this.BtnYes.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FrmWin_MouseDown);
             // 
             // FrmWin
             // 
@@ -185,7 +177,7 @@
             this.MinimizeBox = false;
             this.Name = "FrmWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Form2";
             this.Load += new System.EventHandler(this.FrmWin_Load);
             this.Shown += new System.EventHandler(this.FrmWin_Shown);
             this.ToolStrip1.ResumeLayout(false);
@@ -197,13 +189,17 @@
 
         #endregion
 
-        internal System.Windows.Forms.ToolStrip ToolStrip1;
-        internal System.Windows.Forms.ToolStripLabel LblTitle;
-        internal System.Windows.Forms.ToolStripButton MenuClose;
-        internal System.Windows.Forms.Label LblCongrats;
-        internal System.Windows.Forms.Label LblScore;
+        internal System.Windows.Forms.ToolStrip ToolStrip1; 
+        internal System.Windows.Forms.ToolStripLabel LblTitle; 
+        internal System.Windows.Forms.ToolStripButton MenuClose; 
+        internal System.Windows.Forms.Label LblCongrats; 
+        internal System.Windows.Forms.Label LblScore; 
         internal System.Windows.Forms.Label LblMode;
-        private Sliding_Puzzle_Library.CButton BtnYes;
-        private Sliding_Puzzle_Library.CButton BtnNo;
+        private Sliding_Puzzle_Library.PuzzleTile BtnYes;
+        private Sliding_Puzzle_Library.PuzzleTile BtnNo; 
+
+
+
+
     }
 }

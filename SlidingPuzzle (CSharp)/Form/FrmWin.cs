@@ -1,6 +1,5 @@
-﻿using Sliding_Puzzle_Library;
-using SlidingPuzzle_CSharp;
-using SlidingPuzzle_CSharp.Properties;
+﻿using SlidingPuzzle_CSharp.Properties;
+using static Sliding_Puzzle_Library.ModuleHelper;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,6 +12,8 @@ namespace SlidingPuzzle_CSharp
         {
             InitializeComponent();
         }
+
+        private bool IsContinue;
 
         private void SetColor()
         {
@@ -60,24 +61,33 @@ namespace SlidingPuzzle_CSharp
 
         private void FrmWin_MouseDown(object sender, MouseEventArgs e)
         {
-            Module1.SetMouseDown(this, e);
+            SetMouseDown(this, e);
         }
 
         private void BtnYes_Click(object sender, EventArgs e)
         {
+            IsContinue = true;
             Close();
-            ((FrmMain)Owner).NewPuzzle.StartGame();
         }
 
         private void BtnNo_Click(object sender, EventArgs e)
         {
+            IsContinue = false;
             Close();
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
             base.OnPaint(pevent);
-            Module1.SetRoundedEdges(this);
+            SetRoundedEdges(this);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            AnimateWindow(Handle, 200, AnimateWindowFlags.AW_HIDE | AnimateWindowFlags.AW_BLEND);
+            if (IsContinue)
+                ((FrmMain)Owner).StartGame();
         }
     }
 }

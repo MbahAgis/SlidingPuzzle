@@ -107,7 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sliding Puzzle Library">
-      <HintPath>..\..\..\Github\SlidingPuzzle\Sliding Puzzle Library\bin\x86\Debug\Sliding Puzzle Library.dll</HintPath>
+      <HintPath>..\Sliding Puzzle Library\bin\x86\Debug\Sliding Puzzle Library.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

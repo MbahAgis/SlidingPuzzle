@@ -1,6 +1,6 @@
 ﻿Imports Sliding_Puzzle_Library
 Public Class FrmWin
-
+    Dim IsContinue As Boolean = False
     Private Sub SetColor()
         Dim bckColor, frColor As Color
         If DirectCast(Owner, FrmMain).IsDarkMode Then
@@ -24,32 +24,33 @@ Public Class FrmWin
         BtnYes.Focus()
     End Sub
     Private Sub FrmWin_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-
         Using media As New Media.SoundPlayer(My.Resources.Ta_Da)
             media.Play()
         End Using
-
     End Sub
-
     Private Sub FrmWin_Load(sender As Object, e As EventArgs) Handles Me.Load
         SetColor()
-
     End Sub
     Private Sub FrmWin_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown, ToolStrip1.MouseDown,
             LblTitle.MouseDown, MenuClose.MouseDown, LblCongrats.MouseDown, LblMode.MouseDown, LblScore.MouseDown
         SetMouseDown(Me, e)
     End Sub
     Private Sub BtnYes_Click(sender As Object, e As EventArgs) Handles BtnYes.Click
+        IsContinue = True
         Close()
-        DirectCast(Me.Owner, FrmMain).NewPuzzle.StartGame()
     End Sub
 
     Private Sub BtnNo_Click(sender As Object, e As EventArgs) Handles MenuClose.Click, BtnNo.Click
+        IsContinue = False
         Close()
     End Sub
     Protected Overrides Sub OnPaint(pevent As PaintEventArgs)
         MyBase.OnPaint(pevent)
         SetRoundedEdges(Me)
     End Sub
-
+    Protected Overrides Sub OnClosed(e As EventArgs)
+        MyBase.OnClosed(e)
+        AnimateWindow(Handle, 200, AnimateWindowFlags.AW_HIDE Or AnimateWindowFlags.AW_BLEND)
+        If IsContinue Then DirectCast(Owner, FrmMain).StartGame()
+    End Sub
 End Class

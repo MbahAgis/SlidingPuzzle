@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using static Sliding_Puzzle_Library.ModuleHelper;
 
 namespace SlidingPuzzle_CSharp
 {
@@ -17,178 +18,225 @@ namespace SlidingPuzzle_CSharp
             UpdateStyles();
         }
 
-        private CPuzzle _NewPuzzle;
+        private PuzzleGame _PuzzleGame;
 
-        public CPuzzle NewPuzzle
+        public PuzzleGame PuzzleGame
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
             {
-                return _NewPuzzle;
+                return _PuzzleGame;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
-                if (_NewPuzzle != null)
+                if (_PuzzleGame != null)
                 {
-                    _NewPuzzle.CountClick -= NewPuzzle_CountClick;
-                    _NewPuzzle.Ticker -= NewPuzzle_Ticker;
-                    _NewPuzzle.IsBusy -= NewPuzzle_IsBusy;
+                    _PuzzleGame.Score -= PuzzleGame_Score;
+                    _PuzzleGame.Ticker -= PuzzleGame_Ticker;
+                    _PuzzleGame.GameState -= PuzzleGame_GameState;
                 }
 
-                _NewPuzzle = value;
-                if (_NewPuzzle != null)
+                _PuzzleGame = value;
+                if (_PuzzleGame != null)
                 {
-                    _NewPuzzle.CountClick += NewPuzzle_CountClick;
-                    _NewPuzzle.Ticker += NewPuzzle_Ticker;
-                    _NewPuzzle.IsBusy += NewPuzzle_IsBusy;
+                    _PuzzleGame.Score += PuzzleGame_Score;
+                    _PuzzleGame.Ticker += PuzzleGame_Ticker;
+                    _PuzzleGame.GameState += PuzzleGame_GameState;
                 }
             }
         }
 
-        private bool mode = false;
-        private string modeString = "Number";
-        public bool IsDarkMode = false;
+        private bool PuzzleMode;
+        private string ModeString = "Number";
         private int PuzzleSize = 3;
+        public bool IsDarkMode;
 
-        private void ChangeTheme()
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
+            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
+            ChangeTheme(false, true);
+            AnimateWindow(Handle, 200, AnimateWindowFlags.AW_BLEND);
+            PuzzleGame = new PuzzleGame(this);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            AnimateWindow(Handle, 400, AnimateWindowFlags.AW_HIDE | AnimateWindowFlags.AW_BLEND);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F2)
+            {
+                StartGame();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void ChangeTheme(bool IsChanged, bool IsFirstTime)
+        {
+            if (IsChanged)
+            {
+                AnimateWindow(Handle, 150, AnimateWindowFlags.AW_HIDE | AnimateWindowFlags.AW_BLEND);
+            }
+
             using (var CstmRenderer = new CustomRenderer(IsDarkMode))
             {
                 MenuStrip1.Renderer = CstmRenderer;
                 StatusStrip1.Renderer = CstmRenderer;
                 ToolStrip1.Renderer = CstmRenderer;
-                NewPuzzle.IsDarkMode = IsDarkMode;
+                if (!IsFirstTime)
+                {
+                    PuzzleGame.IsDarkMode = IsDarkMode;
+                }
+
                 BackColor = IsDarkMode ? Color.FromArgb(48, 48, 48) : Color.FromArgb(238, 238, 242);
             }
+
+            if (IsChanged)
+            {
+                Show();
+            }
+        }
+
+        private void SetBoard(bool IsChanged)
+        {
+            if (IsChanged)
+            {
+                AnimateWindow(Handle, 250, AnimateWindowFlags.AW_HIDE | AnimateWindowFlags.AW_BLEND);
+            }
+
+            PuzzleGame.PuzzleMode = PuzzleMode;
+            PuzzleGame.PuzzleSize = PuzzleSize;
+            if (IsChanged)
+            {
+                Show();
+                Top = (Screen.PrimaryScreen.WorkingArea.Height / 2) - (Height / 2);
+                Left = (Screen.PrimaryScreen.WorkingArea.Width / 2) - (Width / 2);
+            }
+        }
+
+        private bool SetMenuCheckedState(object OldValue, object NewValue, ToolStripMenuItem ParentMenu)
+        {
+            ToolStripMenuItem chkMenu = (ToolStripMenuItem)NewValue;
+            foreach (ToolStripMenuItem x in ParentMenu.DropDownItems)
+            {
+                x.Checked = x.Name == chkMenu.Name;
+            }
+
+            bool isChanged = false;
+            if ((string)OldValue != chkMenu.Text)
+            {
+                isChanged = true;
+            }
+
+            return isChanged;
         }
 
         private void MenuMode_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem[] chkMenu = { MenuImage, MenuNumber };
-            ToolStripMenuItem currentLvl = (ToolStripMenuItem)sender;
-            for (int i = 0; i < chkMenu.Length; i++)
-            {
-                if (chkMenu[i].Name != currentLvl.Name)
-                {
-                    chkMenu[i].Checked = false;
-                }
-                else
-                {
-                    chkMenu[i].Checked = true;
+            ToolStripMenuItem chkMenu = (ToolStripMenuItem)sender;
+            bool isChanged = SetMenuCheckedState(ModeString, sender, SubMenuMode);
 
-                    if (currentLvl.Text == "Number")
-                    {
-                        MenuImport.Enabled = false;
-                        mode = false;
-                    }
-                    else
-                    {
-                        MenuImport.Enabled = true;
-                        mode = true;
-                    }
-                }
+            if (chkMenu.Text == "Image")
+            {
+                MenuImportImage.Enabled = true;
+                PuzzleMode = true;
+            }
+            else
+            {
+                MenuImportImage.Enabled = false;
+                PuzzleMode = false;
             }
 
-            modeString = currentLvl.Text;
-            NewPuzzle.Mode = mode;
-            NewPuzzle.PuzzleSize = PuzzleSize;
+            ModeString = chkMenu.Text;
+            SetWaitCursor("Changing puzzle mode", new Action(() => SetBoard(isChanged)));
         }
 
         private void MenuIsDarkMode_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem[] chkMenu = { MenuLight, MenuDark };
-            ToolStripMenuItem currentLvl = (ToolStripMenuItem)sender;
-            for (int i = 0; i < chkMenu.Length; i++)
-            {
-                if (chkMenu[i].Name != currentLvl.Name)
-                {
-                    chkMenu[i].Checked = false;
-                }
-                else
-                {
-                    chkMenu[i].Checked = true;
-                    if (chkMenu[i].Name == "MenuLight")
-                    {
-                        MenuDark.Checked = false;
-                        IsDarkMode = false;
-                    }
-                    else
-                    {
-                        MenuLight.Checked = false;
-                        IsDarkMode = true;
-                    }
-                }
-            }
+            ToolStripMenuItem chkMenu = (ToolStripMenuItem)sender;
+            bool isChanged = SetMenuCheckedState(IsDarkMode ? "Dark" : "Light", sender, SubMenuThemes);
+            IsDarkMode = chkMenu.Text == "Dark";
 
-            ChangeTheme();
+            SetWaitCursor("Changing color theme", new Action(() => ChangeTheme(isChanged, false)));
         }
 
         private void MenuPuzzleSize_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem[] chkMenu = { PuzzleSize3, PuzzleSize4, PuzzleSize5, PuzzleSizeCustom };
-            ToolStripMenuItem currentLvl = (ToolStripMenuItem)sender;
-            for (int i = 0; i < chkMenu.Length; i++)
+            ToolStripMenuItem chkMenu = (ToolStripMenuItem)sender;
+            bool isChanged = SetMenuCheckedState(string.Format("{0} x {0}", PuzzleSize), chkMenu, SubMenuSize);
+            if (chkMenu.Text != "Custom")
             {
-                if (chkMenu[i].Name != currentLvl.Name)
+                PuzzleSize = Convert.ToInt32(Strings.Right(chkMenu.Text, 1));
+            }
+            else
+            {
+            // inputBox validation
+            ReInput:
+
+                string userInput = Interaction.InputBox("Enter Number From 4 - 20 Ex: 4 (It Means 4 x 4)", "Custom Size", "10");
+                if (!Information.IsNumeric(userInput))
                 {
-                    chkMenu[i].Checked = false;
+                    Interaction.MsgBox("You must input number between 4 and 20", (MsgBoxStyle)((int)MsgBoxStyle.Exclamation + (int)MsgBoxStyle.OkOnly), "Information");
+                    goto ReInput;
                 }
                 else
                 {
-                    chkMenu[i].Checked = true;
-                    if (i < 3)
+                    if (Convert.ToInt32(userInput) > 20 || Convert.ToInt32(userInput) < 4)
                     {
-                        PuzzleSize = Convert.ToInt32(Strings.Right(currentLvl.Name, 1));
+                        Interaction.MsgBox("You must input number between 4 and 20", (MsgBoxStyle)(int)MsgBoxStyle.Exclamation + (int)MsgBoxStyle.OkOnly, "Information");
+                        goto ReInput;
                     }
                     else
                     {
-                    // inputBox validation
-                    recreateInputBox:
-                        ;
-                        string userInput = Interaction.InputBox("Enter Number From 4 - 20 Ex: 4 (It Means 4 x 4)", "Custom Size", 10.ToString());
-                        if (!Information.IsNumeric(userInput))
-                        {
-                            Interaction.MsgBox("You must input number between 4 and 20", (MsgBoxStyle)((int)MsgBoxStyle.Exclamation + (int)MsgBoxStyle.OkOnly), "Information");
-                            goto recreateInputBox;
-                        }
-                        else if (Convert.ToDouble(userInput) > 50 || Convert.ToDouble(userInput) < 4)
-                        {
-                            Interaction.MsgBox("You must input number between 4 and 20", (MsgBoxStyle)((int)MsgBoxStyle.Exclamation + (int)MsgBoxStyle.OkOnly), "Information");
-                            goto recreateInputBox;
-                        }
-                        else
-                        {
-                            PuzzleSize = Convert.ToInt32(userInput);
-                        }
+                        PuzzleSize = Convert.ToInt32(userInput);
                     }
-
-                    NewPuzzle.Mode = mode;
-                    NewPuzzle.PuzzleSize = PuzzleSize;
                 }
             }
+
+            SetWaitCursor("Changing puzzle size", new Action(() => SetBoard(isChanged)));
         }
 
-        private void StartGame()
+        public void StartGame()
         {
-            if (NewPuzzle.Mode && !NewPuzzle.IsAnyImage())
+            if (PuzzleGame.PuzzleMode && !PuzzleGame.IsAnyImage())
             {
                 Interaction.MsgBox("Please choose an image first", (MsgBoxStyle)((int)MsgBoxStyle.Exclamation + (int)MsgBoxStyle.OkOnly), "Information");
                 return;
             }
 
-            NewPuzzle.StartGame();
+            SetWaitCursor("Randomize Board", new Action(() => PuzzleGame.StartGame()));
         }
 
-        private void MenuNewGame_Click(object sender, EventArgs e)
+        private void SetWaitCursor(string TextStatus, Action Method)
+        {
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            MenuStrip1.Enabled = false;
+            LblTitle.Text = TextStatus;
+            LblTitle.GetCurrentParent().Update();
+            Method();
+            LblTitle.Text = string.Format("Sliding Puzzle | Mode: {0} | Size: {1} x {1}", ModeString, PuzzleSize);
+            MenuStrip1.Enabled = true;
+            Application.UseWaitCursor = false;
+            Cursor = Cursors.Default;
+        }
+
+        private void NewGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StartGame();
         }
 
-        private void MenuImport_Click(object sender, EventArgs e)
+        private void MenuImportImage_Click(object sender, EventArgs e)
         {
-            NewPuzzle.LoadImage();
+            PuzzleGame.LoadNewImage();
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -196,79 +244,44 @@ namespace SlidingPuzzle_CSharp
             Close();
         }
 
-        private void NewPuzzle_CountClick(int Score, bool WinStatus)
+        private void PuzzleGame_Score(string _score)
         {
-            LblScore.Text = "Score : " + Score;
-            if (Score > 0 && WinStatus)
+            LblScore.Text = "Score : " + _score;
+        }
+
+        private void PuzzleGame_Ticker(string _time)
+        {
+            LblTimer.Text = "Timer : " + _time;
+        }
+
+        private void PuzzleGame_GameState(bool _isWin)
+        {
+            if (_isWin)
             {
-                FrmWin frm = new FrmWin
+                using (FrmWin frm = new FrmWin())
                 {
-                    Owner = this
-                };
-                using (CustomRenderer CstmRenderer = new CustomRenderer(IsDarkMode))
-                {
-                    frm.ToolStrip1.Renderer = CstmRenderer;
+                    frm.Owner = this;
+                    using (CustomRenderer CstmRenderer = new CustomRenderer(IsDarkMode))
+                    {
+                        frm.ToolStrip1.Renderer = CstmRenderer;
+                    }
+
+                    frm.LblScore.Text = "Your " + LblScore.Text;
+                    frm.LblMode.Text = PuzzleMode ? "Start New Game With New Image?" : "Start New Game?";
+                    frm.LblTitle.Text = LblTitle.Text;
+                    frm.ShowDialog();
                 }
-
-                frm.LblScore.Text = "Your " + LblScore.Text;
-
-                frm.LblMode.Text = mode ? "Start New Game With New Image?" : "Start New Game?";
-
-                frm.ShowDialog();
-            }
-        }
-
-        private void NewPuzzle_Ticker(string Time)
-        {
-            LblTimer.Text = "Timer :" + Time;
-        }
-
-        private void NewPuzzle_IsBusy(bool BgwBusyStatus, string TextStatus)
-        {
-            string frmt = string.Format(" | Mode: {0} | Size: {1} x {1}", modeString, PuzzleSize);
-            if (BgwBusyStatus)
-            {
-                Application.UseWaitCursor = true;
-                base.Cursor = Cursors.WaitCursor;
-                MenuStrip1.Enabled = false;
-                LblTitle.Text = TextStatus;
-            }
-            else
-            {
-                MenuStrip1.Enabled = true;
-                LblTitle.Text = TextStatus + frmt;
-                Application.UseWaitCursor = false;
-                base.Cursor = Cursors.Default;
             }
         }
 
         private void FrmMain_MouseDown(object sender, MouseEventArgs e)
         {
-            Module1.SetMouseDown(this, e);
+            SetMouseDown(this, e);
         }
 
-        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
+        private void FrmMain_Resize(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.F2)
-            {
-                StartGame();
-            }
-        }
-
-        private void FrmMain_Load(object sender, EventArgs e)
-        {
-            NewPuzzle = new CPuzzle(cPanel1);
-            ChangeTheme();
-            MaximumSize = Screen.PrimaryScreen.WorkingArea.Size;
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            Module1.SetRoundedEdges(this);
-            Top = Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Height / (double)2) - (Height / (double)2));
-            Left = Convert.ToInt32((Screen.PrimaryScreen.WorkingArea.Width / (double)2) - (Width / (double)2));
-            Update();
+            SetRoundedEdges(this);
         }
     }
 }

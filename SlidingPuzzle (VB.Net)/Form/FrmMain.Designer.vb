@@ -1,5 +1,4 @@
-﻿
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FrmMain
     Inherits System.Windows.Forms.Form
 
@@ -41,12 +40,11 @@ Partial Class FrmMain
         Me.MenuLight = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuDark = New System.Windows.Forms.ToolStripMenuItem()
         Me.BtnExit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuImport = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuImportImage = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuNewGame = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.LblTitle = New System.Windows.Forms.ToolStripLabel()
         Me.MenuClose = New System.Windows.Forms.ToolStripButton()
-        Me.CPanel1 = New Sliding_Puzzle_Library.CPanel()
         Me.StatusStrip1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
@@ -79,10 +77,9 @@ Partial Class FrmMain
         Me.StatusStrip1.AllowMerge = False
         Me.StatusStrip1.BackColor = System.Drawing.SystemColors.Control
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LblScore, Me.LblTimer})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 361)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 368)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 16, 0)
-        Me.StatusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.StatusStrip1.Size = New System.Drawing.Size(312, 29)
         Me.StatusStrip1.SizingGrip = False
         Me.StatusStrip1.TabIndex = 34
@@ -92,11 +89,10 @@ Partial Class FrmMain
         '
         Me.MenuStrip1.BackColor = System.Drawing.SystemColors.Control
         Me.MenuStrip1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuOptions, Me.MenuImport, Me.MenuNewGame})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 29)
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuOptions, Me.MenuImportImage, Me.MenuNewGame})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 33)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.MenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.MenuStrip1.Size = New System.Drawing.Size(312, 24)
         Me.MenuStrip1.TabIndex = 42
         Me.MenuStrip1.Text = "MenuStrip1"
@@ -203,16 +199,16 @@ Partial Class FrmMain
         Me.BtnExit.Size = New System.Drawing.Size(141, 22)
         Me.BtnExit.Text = "Exit"
         '
-        'MenuImport
+        'MenuImportImage
         '
-        Me.MenuImport.AutoSize = False
-        Me.MenuImport.Enabled = False
-        Me.MenuImport.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MenuImport.Name = "MenuImport"
-        Me.MenuImport.ShowShortcutKeys = False
-        Me.MenuImport.Size = New System.Drawing.Size(110, 20)
-        Me.MenuImport.Text = "Import New Image"
-        Me.MenuImport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.MenuImportImage.AutoSize = False
+        Me.MenuImportImage.Enabled = False
+        Me.MenuImportImage.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MenuImportImage.Name = "MenuImportImage"
+        Me.MenuImportImage.ShowShortcutKeys = False
+        Me.MenuImportImage.Size = New System.Drawing.Size(110, 20)
+        Me.MenuImportImage.Text = "Import New Image"
+        Me.MenuImportImage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'MenuNewGame
         '
@@ -232,20 +228,21 @@ Partial Class FrmMain
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(5, 3, 1, 3)
-        Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.ToolStrip1.ShowItemToolTips = False
-        Me.ToolStrip1.Size = New System.Drawing.Size(312, 29)
+        Me.ToolStrip1.Size = New System.Drawing.Size(312, 33)
         Me.ToolStrip1.TabIndex = 130
         '
         'LblTitle
         '
         Me.LblTitle.AutoSize = False
+        Me.LblTitle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.LblTitle.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LblTitle.Image = Global.SlidingPuzzle_VB.Net.My.Resources.Resources.cube1
+        Me.LblTitle.Image = CType(resources.GetObject("LblTitle.Image"), System.Drawing.Image)
         Me.LblTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.LblTitle.Margin = New System.Windows.Forms.Padding(5, 1, 0, 2)
         Me.LblTitle.Name = "LblTitle"
-        Me.LblTitle.Size = New System.Drawing.Size(270, 18)
-        Me.LblTitle.Text = " Sliding Puzzle | Mode: Number | Size: 3 x 3"
+        Me.LblTitle.Size = New System.Drawing.Size(270, 24)
+        Me.LblTitle.Text = "Sliding Puzzle | Mode: Number | Size: 3 x 3"
         Me.LblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'MenuClose
@@ -255,39 +252,25 @@ Partial Class FrmMain
         Me.MenuClose.Image = CType(resources.GetObject("MenuClose.Image"), System.Drawing.Image)
         Me.MenuClose.Margin = New System.Windows.Forms.Padding(0, 1, 3, 2)
         Me.MenuClose.Name = "MenuClose"
-        Me.MenuClose.Size = New System.Drawing.Size(23, 20)
-        '
-        'CPanel1
-        '
-        Me.CPanel1.AutoScroll = True
-        Me.CPanel1.AutoSize = True
-        Me.CPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.CPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.CPanel1.Location = New System.Drawing.Point(0, 53)
-        Me.CPanel1.Margin = New System.Windows.Forms.Padding(18)
-        Me.CPanel1.Name = "CPanel1"
-        Me.CPanel1.Size = New System.Drawing.Size(312, 308)
-        Me.CPanel1.TabIndex = 131
+        Me.MenuClose.Size = New System.Drawing.Size(23, 24)
         '
         'FrmMain
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(312, 390)
+        Me.ClientSize = New System.Drawing.Size(312, 397)
         Me.ControlBox = False
-        Me.Controls.Add(Me.CPanel1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Icon = Global.SlidingPuzzle_VB.Net.My.Resources.Resources.cube
-        Me.KeyPreview = True
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(312, 390)
+        Me.MinimumSize = New System.Drawing.Size(312, 397)
         Me.Name = "FrmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.StatusStrip1.ResumeLayout(False)
@@ -317,10 +300,9 @@ Partial Class FrmMain
     Friend WithEvents MenuLight As ToolStripMenuItem
     Friend WithEvents MenuDark As ToolStripMenuItem
     Friend WithEvents BtnExit As ToolStripMenuItem
-    Friend WithEvents MenuImport As ToolStripMenuItem
+    Friend WithEvents MenuImportImage As ToolStripMenuItem
     Friend WithEvents MenuNewGame As ToolStripMenuItem
     Friend WithEvents ToolStrip1 As ToolStrip
     Friend WithEvents LblTitle As ToolStripLabel
     Friend WithEvents MenuClose As ToolStripButton
-    Friend WithEvents CPanel1 As Sliding_Puzzle_Library.CPanel
 End Class

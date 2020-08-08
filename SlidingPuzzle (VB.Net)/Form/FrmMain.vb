@@ -1,111 +1,180 @@
-﻿
-Imports Sliding_Puzzle_Library
+﻿Imports Sliding_Puzzle_Library
 
 Public Class FrmMain
+#Region "Variable, Constructor, FormAnimation"
+    Public WithEvents PuzzleGame As PuzzleGame
 
-    Public WithEvents NewPuzzle As CPuzzle
-    Private mode As Boolean = False
-    Private modeString As String = "Number"
-    Public IsDarkMode As Boolean = False
+    Private PuzzleMode As Boolean = False
+    Private ModeString As String = "Number"
     Private PuzzleSize As Integer = 3
+    Public IsDarkMode As Boolean = False
+
 
     Sub New()
         ' This call is required by the designer.
         InitializeComponent()
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint Or ControlStyles.ResizeRedraw, True)
         UpdateStyles()
+
     End Sub
-    Private Sub ChangeTheme()
+
+    Protected Overrides Sub OnLoad(e As EventArgs)
+        MyBase.OnLoad(e)
+        MaximumSize = Screen.PrimaryScreen.WorkingArea.Size
+        ChangeTheme(False, True)
+        AnimateWindow(Handle, 200, AnimateWindowFlags.AW_BLEND)
+        PuzzleGame = New PuzzleGame(Me)
+
+    End Sub
+
+    Protected Overrides Sub OnClosed(e As EventArgs)
+        MyBase.OnClosed(e)
+        AnimateWindow(Handle, 400, AnimateWindowFlags.AW_HIDE Or AnimateWindowFlags.AW_BLEND)
+    End Sub
+
+#End Region
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, ByVal keyData As Keys) As Boolean
+        If keyData = Keys.F2 Then
+            StartGame()
+            Return True
+        End If
+        Return MyBase.ProcessCmdKey(msg, keyData)
+    End Function
+
+#Region "MenuStripClick Event"
+
+    Private Sub ChangeTheme(IsChanged As Boolean, IsFirstTime As Boolean)
+
+        If IsChanged Then AnimateWindow(Handle, 150, AnimateWindowFlags.AW_HIDE Or AnimateWindowFlags.AW_BLEND)
         Using CstmRenderer As New CustomRenderer(IsDarkMode)
             MenuStrip1.Renderer = CstmRenderer
             StatusStrip1.Renderer = CstmRenderer
             ToolStrip1.Renderer = CstmRenderer
-            NewPuzzle.IsDarkMode = IsDarkMode
+            If Not IsFirstTime Then PuzzleGame.IsDarkMode = IsDarkMode
             If IsDarkMode Then BackColor = Color.FromArgb(48, 48, 48) Else BackColor = Color.FromArgb(238, 238, 242)
         End Using
+        If IsChanged Then Show()
+
     End Sub
-    Private Sub MenuMode_Click(sender As Object, e As EventArgs) Handles MenuImage.Click, MenuNumber.Click
-        Dim chkMenu() As ToolStripMenuItem = {MenuImage, MenuNumber}
-        Dim currentLvl As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        For i = 0 To chkMenu.Length - 1
-            If chkMenu(i).Name <> currentLvl.Name Then
-                chkMenu(i).Checked = False
+    Private Sub SetBoard(IsChanged As Boolean)
+
+        If IsChanged Then AnimateWindow(Handle, 250, AnimateWindowFlags.AW_HIDE Or AnimateWindowFlags.AW_BLEND)
+        PuzzleGame.PuzzleMode = PuzzleMode
+        PuzzleGame.PuzzleSize = PuzzleSize
+
+        If IsChanged Then
+            Show()
+            Top = ((Screen.PrimaryScreen.WorkingArea.Height / 2) - (Height / 2))
+            Left = ((Screen.PrimaryScreen.WorkingArea.Width / 2) - (Width / 2))
+        End If
+
+
+    End Sub
+    Private Function SetMenuCheckedState(OldValue As Object, NewValue As Object, ParentMenu As ToolStripMenuItem) As Boolean
+        Dim chkMenu As ToolStripMenuItem = CType(NewValue, ToolStripMenuItem)
+        For Each x As ToolStripMenuItem In ParentMenu.DropDownItems
+            If x IsNot chkMenu Then
+                x.Checked = False
             Else
-                chkMenu(i).Checked = True
-                ' Dim frmt As String = String.Format(" | Mode: {0} | Size: {1} x {1}", currentLvl.Text, PuzzleSize + 2)
-                If currentLvl.Text = "Number" Then MenuImport.Enabled = False : mode = False Else MenuImport.Enabled = True : mode = True
+                x.Checked = True
             End If
         Next
-        modeString = currentLvl.Text
-        NewPuzzle.Mode = mode
-        NewPuzzle.PuzzleSize = PuzzleSize
 
+        Dim isChanged As Boolean = False
+        If OldValue <> chkMenu.Text Then isChanged = True
+
+        Return isChanged
+    End Function
+    Private Sub MenuMode_Click(sender As Object, e As EventArgs) Handles MenuImage.Click, MenuNumber.Click
+        Dim isChanged As Boolean = SetMenuCheckedState(ModeString, sender, SubMenuMode)
+
+        If sender.Text = "Image" Then MenuImportImage.Enabled = True : PuzzleMode = True Else MenuImportImage.Enabled = False : PuzzleMode = False
+        ModeString = sender.Text
+
+        SetWaitCursor("Changing puzzle mode", New Action(Sub() SetBoard(isChanged)))
     End Sub
     Private Sub MenuIsDarkMode_Click(sender As Object, e As EventArgs) Handles MenuLight.Click, MenuDark.Click
-        Dim chkMenu() As ToolStripMenuItem = {MenuLight, MenuDark}
-        Dim currentLvl As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-        For i = 0 To chkMenu.Length - 1
-            If chkMenu(i).Name <> currentLvl.Name Then
-                chkMenu(i).Checked = False
-            Else
-                chkMenu(i).Checked = True
-                If chkMenu(i).Name = "MenuLight" Then MenuDark.Checked = False : IsDarkMode = False Else MenuLight.Checked = False : IsDarkMode = True
-            End If
-        Next
-        ChangeTheme()
+        Dim isChanged As Boolean = SetMenuCheckedState(If(IsDarkMode, "Dark", "Light"), sender, SubMenuThemes)
+
+        If sender.Text = "Dark" Then IsDarkMode = True Else IsDarkMode = False
+
+        SetWaitCursor("Changing color theme", New Action(Sub() ChangeTheme(isChanged, False)))
     End Sub
     Private Sub MenuPuzzleSize_Click(sender As Object, e As EventArgs) Handles PuzzleSize3.Click, PuzzleSize4.Click, PuzzleSize5.Click, PuzzleSizeCustom.Click
-        Dim chkMenu() As ToolStripMenuItem = {PuzzleSize3, PuzzleSize4, PuzzleSize5, PuzzleSizeCustom}
-        Dim currentLvl As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
-
-        For i = 0 To chkMenu.Length - 1
-            If chkMenu(i).Name <> currentLvl.Name Then
-                chkMenu(i).Checked = False
+        Dim isChanged As Boolean = SetMenuCheckedState(String.Format("{0} x {0}", PuzzleSize), sender, SubMenuSize)
+        If Not sender.Text = "Custom" Then
+            PuzzleSize = Strings.Right(sender.Text, 1)
+        Else
+            'inputBox validation
+1:          Dim userInput As String = InputBox("Enter Number From 4 - 20 Ex: 4 (It Means 4 x 4)", "Custom Size", 10)
+            If Not IsNumeric(userInput) Then
+                MsgBox("You must input number between 4 and 20", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
+                GoTo 1
             Else
-                chkMenu(i).Checked = True
-                If i < 3 Then
-                    PuzzleSize = Strings.Right(currentLvl.Name, 1)
+                If userInput > 20 Or userInput < 4 Then
+                    MsgBox("You must input number between 4 and 20", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
+                    GoTo 1
                 Else
-                    'inputBox validation
-1:                  Dim userInput As String = InputBox("Enter Number From 4 - 20 Ex: 4 (It Means 4 x 4)", "Custom Size", 10)
-                    If Not IsNumeric(userInput) Then
-                        MsgBox("You must input number between 4 and 20", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
-                        GoTo 1
-                    Else
-                        If userInput > 50 Or userInput < 4 Then
-                            MsgBox("You must input number between 4 and 20", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
-                            GoTo 1
-                        Else
-                            PuzzleSize = userInput
-                        End If
-                    End If
+                    PuzzleSize = userInput
                 End If
-                NewPuzzle.Mode = mode
-                NewPuzzle.PuzzleSize = PuzzleSize
-            End If
-        Next
-    End Sub
-    Private Sub StartGame()
-        If NewPuzzle.Mode Then
-            If Not NewPuzzle.IsAnyImage Then
-                MsgBox("Please choose an image first", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
-                Exit Sub
             End If
         End If
-        NewPuzzle.StartGame()
+
+        SetWaitCursor("Changing puzzle size", New Action(Sub() SetBoard(isChanged)))
+    End Sub
+#End Region
+    Public Sub StartGame()
+
+        If PuzzleGame.PuzzleMode AndAlso Not PuzzleGame.IsAnyImage Then
+            MsgBox("Please choose an image first", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Information")
+            Exit Sub
+        End If
+
+        SetWaitCursor("Randomize Board", New Action(Sub() PuzzleGame.StartGame()))
+
+    End Sub
+    Private Sub SetWaitCursor(TextStatus As String, Method As Action)
+
+        Application.UseWaitCursor = True
+        Cursor = Cursors.WaitCursor
+        MenuStrip1.Enabled = False
+        LblTitle.Text = TextStatus
+        LblTitle.GetCurrentParent.Update()
+
+
+        Method()
+        LblTitle.Text = String.Format("Sliding Puzzle | Mode: {0} | Size: {1} x {1}", ModeString, PuzzleSize)
+
+
+        MenuStrip1.Enabled = True
+        Application.UseWaitCursor = False
+        Cursor = Cursors.Default
+
     End Sub
     Private Sub NewGameToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MenuNewGame.Click
         StartGame()
     End Sub
-    Private Sub MenuImport_Click(sender As Object, e As EventArgs) Handles MenuImport.Click
-        NewPuzzle.LoadImage()
+    Private Sub MenuImportImage_Click(sender As Object, e As EventArgs) Handles MenuImportImage.Click
+
+        PuzzleGame.LoadNewImage()
+
     End Sub
     Private Sub Close_Click(sender As Object, e As EventArgs) Handles MenuClose.Click, BtnExit.Click
         Close()
     End Sub
-    Private Sub NewPuzzle_CountClick(Score As Integer, WinStatus As Boolean) Handles NewPuzzle.CountClick
-        LblScore.Text = "Score : " & Score
-        If Score > 0 AndAlso WinStatus Then
+
+
+
+    Private Sub PuzzleGame_Score(_score As String) Handles PuzzleGame.Score
+        LblScore.Text = "Score : " & _score
+    End Sub
+
+    Private Sub PuzzleGame_Ticker(_time As String) Handles PuzzleGame.Ticker
+        LblTimer.Text = "Timer : " & _time
+    End Sub
+
+    Private Sub PuzzleGame_GameState(_isWin As Boolean) Handles PuzzleGame.GameState
+        If _isWin Then
             Dim frm As New FrmWin
             With frm
                 .Owner = Me
@@ -114,56 +183,22 @@ Public Class FrmMain
                 End Using
 
                 .LblScore.Text = "Your " & LblScore.Text
-                If mode Then .LblMode.Text = "Start New Game With New Image?" Else .LblMode.Text = "Start New Game?"
-
+                If PuzzleMode Then .LblMode.Text = "Start New Game With New Image?" Else .LblMode.Text = "Start New Game?"
+                .LblTitle.Text = LblTitle.Text
                 .ShowDialog()
             End With
         End If
     End Sub
-    Private Sub NewPuzzle_Ticker(Time As String) Handles NewPuzzle.Ticker
-        LblTimer.Text = "Timer :" & Time
-    End Sub
-    Private Sub NewPuzzle_IsBusy(BgwBusyStatus As Boolean, TextStatus As String) Handles NewPuzzle.IsBusy
-        Dim frmt As String = String.Format(" | Mode: {0} | Size: {1} x {1}", modeString, PuzzleSize)
-
-        If BgwBusyStatus Then
-            Application.UseWaitCursor = True
-            Cursor = Cursors.WaitCursor
-            MenuStrip1.Enabled = False
-            LblTitle.Text = TextStatus
-
-        Else
-            MenuStrip1.Enabled = True
-            LblTitle.Text = TextStatus & frmt
-            Application.UseWaitCursor = False
-            Cursor = Cursors.Default
-
-        End If
-
-    End Sub
 
     Private Sub FrmMain_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown, ToolStrip1.MouseDown,
-        StatusStrip1.MouseDown, LblTitle.MouseDown, MenuStrip1.MouseDown, LblScore.MouseDown, LblTimer.MouseDown, CPanel1.MouseDown
+        StatusStrip1.MouseDown, LblTitle.MouseDown, MenuStrip1.MouseDown, LblScore.MouseDown, LblTimer.MouseDown
+
         SetMouseDown(Me, e)
     End Sub
-    Private Sub FrmMain_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
-        If e.KeyCode = Keys.F2 Then
-            StartGame()
-        End If
-    End Sub
-    Private Sub FrmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        NewPuzzle = New CPuzzle(CPanel1)
-        ChangeTheme()
-        MaximumSize = Screen.PrimaryScreen.WorkingArea.Size
-    End Sub
 
-    Protected Overrides Sub OnResize(e As EventArgs)
-        MyBase.OnResize(e)
+    Private Sub FrmMain_Resize(sender As Object, e As EventArgs) Handles Me.Resize
         SetRoundedEdges(Me)
-        Top = ((Screen.PrimaryScreen.WorkingArea.Height / 2) - (Height / 2))
-        Left = ((Screen.PrimaryScreen.WorkingArea.Width / 2) - (Width / 2))
-
-        Update()
     End Sub
+
 End Class
 
